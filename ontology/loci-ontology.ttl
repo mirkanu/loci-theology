@@ -1,0 +1,108 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix loci: <https://loci-theology.org/vocab/> .
+
+<https://loci-theology.org/vocab/loci-ontology>
+    a owl:Ontology ;
+    dcterms:title        "Loci Theology Taxonomy Ontology" ;
+    dcterms:description "Typed relations and class constraints for the loci-theology Christian doctrine taxonomy." ;
+    owl:versionInfo "0.1.0" .
+
+######################################################################
+# Classes
+######################################################################
+
+loci:Concept a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Concept" ;
+    rdfs:comment "A doctrine or topic in the loci-theology taxonomy. Subclass of skos:Concept so existing SKOS tools keep working." .
+
+loci:Locus a owl:Class ;
+    rdfs:subClassOf loci:Concept ;
+    rdfs:label "Locus" ;
+    rdfs:comment "One of the six traditional loci of dogmatics. Top-level concept; must not have a broader concept." .
+
+loci:Doctrine a owl:Class ;
+    rdfs:subClassOf loci:Concept ;
+    rdfs:label "Doctrine" ;
+    rdfs:comment "A teaching, claim, or proposition of Christian theology." .
+
+loci:Topic a owl:Class ;
+    rdfs:subClassOf loci:Concept ;
+    rdfs:label "Topic" ;
+    rdfs:comment "A non-propositional subject: an event, person, object, or theme referenced by doctrines." .
+
+######################################################################
+# Typed object properties — relations beyond plain skos:related
+######################################################################
+#
+# skos:related already gives us the symmetric "somehow connected" link.
+# Custom properties below let consumers query *how* two concepts connect.
+#
+
+loci:dependsOn a owl:ObjectProperty , owl:IrreflexiveObjectProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "depends on" ;
+    rdfs:comment "This doctrine stands or falls with the dependency. e.g. justification by faith alone depends on imputation." .
+
+loci:groundsIn a owl:ObjectProperty , owl:IrreflexiveObjectProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "grounds in" ;
+    rdfs:comment "The first concept finds its metaphysical or theological ground in the second. e.g. human nature of Christ grounds in hypostatic union." .
+
+loci:presupposes a owl:ObjectProperty , owl:IrreflexiveObjectProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "presupposes" ;
+    rdfs:comment "The first concept logically presupposes the second; you cannot state one without the other already being true. e.g. atonement presupposes incarnation." .
+
+loci:contrastsWith a owl:ObjectProperty , owl:IrreflexiveObjectProperty , owl:SymmetricProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "contrasts with" ;
+    rdfs:comment "The two concepts are dialectical opposites or commonly distinguished from one another (e.g. justification vs sanctification)." .
+
+loci:fulfilledBy a owl:ObjectProperty , owl:IrreflexiveObjectProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "fulfilled by" ;
+    rdfs:comment "A theme or promise under one locus is realised by an event or doctrine under another (e.g. OT election is fulfilled by NT election)." .
+
+loci:appliesTo a owl:ObjectProperty , owl:IrreflexiveObjectProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "applies to" ;
+    rdfs:comment "The doctrine is applied to or bears on the named topic (e.g. imputed righteousness applies to the believer)." .
+
+loci:distinctFrom a owl:ObjectProperty , owl:IrreflexiveObjectProperty , owl:SymmetricProperty ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:label "distinct from" ;
+    rdfs:comment "The two concepts must be kept separate (e.g. impassibility of God distinct from stoicism)." .
+
+######################################################################
+# Datatype properties — provenance and editorial metadata
+######################################################################
+
+loci:confidence a owl:DatatypeProperty ;
+    rdfs:domain loci:Concept ;
+    rdfs:range  xsd:decimal ;
+    rdfs:label "confidence" ;
+    rdfs:comment "0.0–1.0 confidence that this entry belongs in the taxonomy at this position (curator-asserted)." .
+
+loci:cfi a owl:DatatypeProperty ;
+    rdfs:domain loci:Concept ;
+    rdfs:range  xsd:string ;
+    rdfs:label "CFI" ;
+    rdfs:comment "Catholic Faith Index reference, if a comparable entry exists. Optional." .
+
+loci:bib a owl:DatatypeProperty ;
+    rdfs:domain loci:Concept ;
+    rdfs:range  xsd:string ;
+    rdfs:label "BIB" ;
+    rdfs:comment "Berean Index reference, if a comparable entry exists. Optional." .
+
+loci:tag a owl:DatatypeProperty ;
+    rdfs:domain loci:Concept ;
+    rdfs:range  xsd:string ;
+    rdfs:label "tag" ;
+    rdfs:comment "External identifier or slug in another well-known theology tagging scheme (e.g. NA28 topical tag, Navigator, TSK). Free-form." .

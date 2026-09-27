@@ -1,0 +1,119 @@
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix loci: <https://loci-theology.org/vocab/> .
+@prefix ex:   <https://loci-theology.org/id/> .
+
+######################################################################
+# Validation shapes for the loci-theology taxonomy.
+# Run with `python tools/validate.py data/loci.ttl`.
+######################################################################
+
+ex:ConceptShape a sh:NodeShape ;
+    sh:targetClass loci:Concept ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:minCount 1 ;
+        sh:uniqueLang true ;
+        sh:datatype rdf:langString ;
+        sh:message "Each concept must have a prefLabel (at most one per language)." ;
+    ] , [
+        sh:path skos:altLabel ;
+        sh:datatype rdf:langString ;
+    ] , [
+        sh:path skos:broader ;
+        sh:class loci:Concept ;
+        sh:message "broader must point to another Concept." ;
+    ] , [
+        sh:path skos:narrower ;
+        sh:class loci:Concept ;
+        sh:message "narrower must point to another Concept." ;
+    ] , [
+        sh:path skos:related ;
+        sh:class loci:Concept ;
+        sh:message "related must point to another Concept." ;
+    ] , [
+        sh:path loci:groundsIn ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:dependsOn ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:presupposes ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:contrastsWith ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:fulfilledBy ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:appliesTo ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:distinctFrom ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:related ;
+        sh:class loci:Concept ;
+    ] , [
+        sh:path loci:confidence ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+        sh:maxCount 1 ;
+    ] , [
+        sh:path loci:cfi ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] , [
+        sh:path loci:bib ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] , [
+        sh:path loci:tag ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:LocusShape a sh:NodeShape ;
+    sh:targetClass loci:Locus ;
+    sh:property [
+        sh:path skos:broader ;
+        sh:maxCount 0 ;
+        sh:message "A Locus has no broader concept (it is a top of the tree)." ;
+    ] ;
+    sh:sparql [
+        sh:message "Every Locus must have at least one narrower concept (otherwise it is empty)." ;
+        sh:select """
+            SELECT $this WHERE {
+                $this a loci:Locus .
+                FILTER NOT EXISTS { ?child skos:broader $this }
+            }
+        """ ;
+    ] .
+
+ex:NoOrphansShape a sh:NodeShape ;
+    sh:targetClass loci:Doctrine ;
+    # Doctrines must have at least one skos:broader parent
+    # (i.e. they are not orphans in the hierarchy).
+    sh:sparql [
+        sh:message "Each Doctrine (non-Locus) must have at least one skos:broader parent." ;
+        sh:select """
+            SELECT $this WHERE {
+                $this a loci:Doctrine .
+                FILTER NOT EXISTS { $this skos:broader ?b }
+            }
+        """ ;
+    ] .
+
+ex:ConceptSchemeShape a sh:NodeShape ;
+    sh:targetClass skos:ConceptScheme ;
+    sh:property [
+        sh:path skos:hasTopConcept ;
+        sh:class loci:Locus ;
+        sh:minCount 6 ;
+        sh:maxCount 6 ;
+        sh:message "A ConceptScheme must have exactly six top-level loci." ;
+    ] .

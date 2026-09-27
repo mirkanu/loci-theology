@@ -1,0 +1,348 @@
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix loci:    <https://loci-theology.org/vocab/> .
+@prefix lt:      <https://loci-theology.org/id/> .
+
+######################################################################
+# ConceptScheme
+######################################################################
+
+lt: a skos:ConceptScheme ;
+    dcterms:title "Loci Theology" ;
+    dcterms:description "Taxonomy of Christian doctrines around the six loci of dogmatics." ;
+    skos:hasTopConcept
+        lt:theology-proper , lt:anthropology , lt:christology ,
+        lt:soteriology , lt:ecclesiology , lt:eschatology .
+
+######################################################################
+# 1. Theology Proper
+######################################################################
+
+lt:theology-proper a owl:Thing , skos:Concept , loci:Locus ;
+    skos:prefLabel "Theology Proper"@en ;
+    skos:notation "TP" .
+
+lt:attributes-of-god a loci:Topic ;
+    skos:prefLabel "Attributes of God"@en ;
+    skos:broader lt:theology-proper .
+
+lt:divine-simplicity a loci:Doctrine ;
+    skos:prefLabel "Divine Simplicity"@en ;
+    skos:broader lt:attributes-of-god ;
+    loci:contrastsWith lt:divine-composition .
+
+lt:divine-composition a loci:Doctrine ;
+    skos:prefLabel "Divine Composition"@en ;
+    skos:altLabel "compositum"@en ;
+    skos:altLabel "Divine Composition Thesis"@en ;
+    skos:broader lt:attributes-of-god .
+
+lt:divine-attributes-classical a loci:Topic ;
+    skos:prefLabel "Classical Attributes (Incommunicable)"@en ;
+    skos:broader lt:attributes-of-god .
+
+lt:aseity a loci:Doctrine ;
+    skos:prefLabel "Aseity"@en ;
+    skos:broader lt:divine-attributes-classical ;
+    skos:note "Self-existence; God is uncaused." .
+
+lt:impassibility a loci:Doctrine ;
+    skos:prefLabel "Impassibility"@en ;
+    skos:broader lt:divine-attributes-classical ;
+    loci:presupposes lt:divine-simplicity .
+
+lt:trinity a loci:Doctrine ;
+    skos:prefLabel "Trinity"@en ;
+    skos:broader lt:theology-proper ;
+    loci:groundsIn lt:monotheism .
+
+lt:monotheism a loci:Doctrine ;
+    skos:prefLabel "Monotheism"@en ;
+    skos:broader lt:theology-proper ;
+    skos:altLabel "One God, One Being"@en .
+
+lt:divine-decrees a loci:Topic ;
+    skos:prefLabel "Divine Decrees"@en ;
+    skos:broader lt:theology-proper .
+
+lt:election a loci:Doctrine ;
+    skos:prefLabel "Election"@en ;
+    skos:broader lt:divine-decrees ;
+    loci:fulfilledBy lt:union-with-christ .
+
+######################################################################
+# 2. Anthropology
+######################################################################
+
+lt:anthropology a owl:Thing , skos:Concept , loci:Locus ;
+    skos:prefLabel "Anthropology"@en ;
+    skos:notation "AN" .
+
+lt:nature-of-man a loci:Topic ;
+    skos:prefLabel "Nature of Man"@en ;
+    skos:broader lt:anthropology .
+
+lt:body-soul-unity a loci:Doctrine ;
+    skos:prefLabel "Body–Soul Unity"@en ;
+    skos:broader lt:nature-of-man ;
+    loci:contrastsWith lt:trichotomy .
+
+lt:trichotomy a loci:Doctrine ;
+    skos:prefLabel "Trichotomy"@en ;
+    skos:broader lt:nature-of-man .
+
+lt:image-of-god a loci:Doctrine ;
+    skos:prefLabel "Image of God"@en ;
+    skos:broader lt:anthropology .
+
+lt:sin a loci:Topic ;
+    skos:prefLabel "Sin"@en ;
+    skos:broader lt:anthropology .
+
+lt:original-sin a loci:Doctrine ;
+    skos:prefLabel "Original Sin"@en ;
+    skos:broader lt:sin ;
+    loci:presupposes lt:body-soul-unity .
+
+lt:total-depravity a loci:Doctrine ;
+    skos:prefLabel "Total Depravity"@en ;
+    skos:broader lt:sin ;
+    loci:dependsOn lt:original-sin .
+
+######################################################################
+# 3. Christology (the fleshed-out example)
+######################################################################
+
+lt:christology a owl:Thing , skos:Concept , loci:Locus ;
+    skos:prefLabel "Christology"@en ;
+    skos:notation "CH" .
+
+lt:person-of-christ a loci:Topic ;
+    skos:prefLabel "Person of Christ"@en ;
+    skos:broader lt:christology .
+
+lt:hypostatic-union a loci:Doctrine ;
+    skos:prefLabel "Hypostatic Union"@en ;
+    skos:broader lt:person-of-christ ;
+    loci:dependsOn lt:divine-simplicity ;
+    loci:presupposes lt:trinity .
+
+lt:natures-of-christ a loci:Topic ;
+    skos:prefLabel "Natures of Christ"@en ;
+    skos:broader lt:person-of-christ ;
+    skos:altLabel "Two Natures"@en .
+
+lt:human-nature-of-christ a loci:Doctrine ;
+    skos:prefLabel "Human Nature of Christ"@en ;
+    skos:broader lt:natures-of-christ ;
+    loci:groundsIn lt:hypostatic-union .
+
+lt:divine-nature-of-christ a loci:Doctrine ;
+    skos:prefLabel "Divine Nature of Christ"@en ;
+    skos:broader lt:natures-of-christ ;
+    loci:groundsIn lt:hypostatic-union ;
+    loci:contrastsWith lt:human-nature-of-christ .
+
+lt:anhypasia a loci:Doctrine ;
+    skos:prefLabel "Anhypasia"@en ;
+    skos:broader lt:person-of-christ ;
+    loci:dependsOn lt:hypostatic-union .
+
+lt:enhypasia a loci:Doctrine ;
+    skos:prefLabel "Enhypasia"@en ;
+    skos:broader lt:person-of-christ ;
+    loci:dependsOn lt:hypostatic-union .
+
+lt:states-of-christ a loci:Topic ;
+    skos:prefLabel "States of Christ"@en ;
+    skos:broader lt:christology .
+
+lt:kenosis a loci:Doctrine ;
+    skos:prefLabel "Kenosis"@en ;
+    skos:broader lt:states-of-christ .
+
+
+lt:exaltation a loci:Doctrine ;
+    skos:prefLabel "Exaltation of Christ"@en ;
+    skos:broader lt:states-of-christ ;
+    loci:fulfilledBy lt:session .
+
+lt:incarnation a loci:Doctrine ;
+    skos:prefLabel "Incarnation"@en ;
+    skos:broader lt:christology ;
+    loci:presupposes lt:divine-nature-of-christ ;
+    loci:distinctFrom lt:docetism .
+
+lt:docetism a loci:Doctrine ;
+    skos:prefLabel "Docetism"@en ;
+    skos:broader lt:christology ;
+    skos:altLabel "Docetic Christology"@en .
+
+lt:communicatio-idiomatum a loci:Doctrine ;
+    skos:prefLabel "Communicatio Idiomatum"@en ;
+    skos:broader lt:person-of-christ .
+
+######################################################################
+# 4. Soteriology
+######################################################################
+
+lt:soteriology a owl:Thing , skos:Concept , loci:Locus ;
+    skos:prefLabel "Soteriology"@en ;
+    skos:notation "SO" .
+
+lt:atonement a loci:Topic ;
+    skos:prefLabel "Atonement"@en ;
+    skos:broader lt:soteriology .
+
+lt:penal-substitution a loci:Doctrine ;
+    skos:prefLabel "Penal Substitutionary Atonement"@en ;
+    skos:broader lt:atonement ;
+    loci:presupposes lt:incarnation .
+
+lt:christus-victor a loci:Doctrine ;
+    skos:prefLabel "Christus Victor"@en ;
+    skos:broader lt:atonement .
+
+lt:recapitulation a loci:Doctrine ;
+    skos:prefLabel "Recapitulation"@en ;
+    skos:broader lt:atonement .
+
+lt:moral-influence a loci:Doctrine ;
+    skos:prefLabel "Moral Influence Theory"@en ;
+    skos:broader lt:atonement ;
+    loci:contrastsWith lt:penal-substitution .
+
+lt:justification a loci:Topic ;
+    skos:prefLabel "Justification"@en ;
+    skos:broader lt:soteriology .
+
+lt:justification-by-faith-alone a loci:Doctrine ;
+    skos:prefLabel "Justification by Faith Alone"@en ;
+    skos:altLabel "Sola Fide"@en ;
+    skos:broader lt:justification .
+
+lt:imputation a loci:Doctrine ;
+    skos:prefLabel "Imputation (Righteousness of Christ)"@en ;
+    skos:broader lt:justification .
+
+lt:sanctification a loci:Topic ;
+    skos:prefLabel "Sanctification"@en ;
+    skos:broader lt:soteriology ;
+    skos:related lt:justification ;
+    loci:contrastsWith lt:justification-by-faith-alone .
+
+lt:union-with-christ a loci:Doctrine ;
+    skos:prefLabel "Union with Christ"@en ;
+    skos:broader lt:soteriology ;
+    loci:dependsOn lt:incarnation .
+
+######################################################################
+# 5. Ecclesiology
+######################################################################
+
+lt:ecclesiology a owl:Thing , skos:Concept , loci:Locus ;
+    skos:prefLabel "Ecclesiology"@en ;
+    skos:notation "EC" .
+
+lt:church a loci:Topic ;
+    skos:prefLabel "Church"@en ;
+    skos:broader lt:ecclesiology .
+
+lt:notes-of-the-church a loci:Topic ;
+    skos:prefLabel "Notes of the Church"@en ;
+    skos:broader lt:ecclesiology .
+
+lt:visible-church a loci:Doctrine ;
+    skos:prefLabel "Visible Church"@en ;
+    skos:broader lt:ecclesiology .
+
+lt:invisible-church a loci:Doctrine ;
+    skos:prefLabel "Invisible Church"@en ;
+    skos:broader lt:ecclesiology .
+
+lt:sacraments a loci:Topic ;
+    skos:prefLabel "Sacraments"@en ;
+    skos:broader lt:ecclesiology .
+
+lt:baptism a loci:Doctrine ;
+    skos:prefLabel "Baptism"@en ;
+    skos:broader lt:sacraments .
+
+lt:lords-supper a loci:Doctrine ;
+    skos:prefLabel "Lord's Supper"@en ;
+    skos:broader lt:sacraments .
+
+lt:church-government a loci:Topic ;
+    skos:prefLabel "Church Government"@en ;
+    skos:broader lt:ecclesiology .
+
+lt:presbyterianism a loci:Doctrine ;
+    skos:prefLabel "Presbyterianism"@en ;
+    skos:broader lt:church-government .
+
+lt:episcopalianism a loci:Doctrine ;
+    skos:prefLabel "Episcopalianism"@en ;
+    skos:broader lt:church-government .
+
+######################################################################
+# 6. Eschatology
+######################################################################
+
+lt:eschatology a owl:Thing , skos:Concept , loci:Locus ;
+    skos:prefLabel "Eschatology"@en ;
+    skos:notation "ES" .
+
+lt:last-things a loci:Topic ;
+    skos:prefLabel "Last Things"@en ;
+    skos:broader lt:eschatology .
+
+lt:death a loci:Doctrine ;
+    skos:prefLabel "Death"@en ;
+    skos:broader lt:last-things ;
+    loci:appliesTo lt:body-soul-unity .
+
+lt:intermediate-state a loci:Doctrine ;
+    skos:prefLabel "Intermediate State"@en ;
+    skos:broader lt:last-things .
+
+lt:second-coming a loci:Doctrine ;
+    skos:prefLabel "Second Coming"@en ;
+    skos:broader lt:last-things ;
+    loci:dependsOn lt:exaltation .
+
+lt:resurrection-of-the-body a loci:Doctrine ;
+    skos:prefLabel "Resurrection of the Body"@en ;
+    skos:broader lt:last-things .
+
+lt:judgment a loci:Doctrine ;
+    skos:prefLabel "Final Judgment"@en ;
+    skos:broader lt:last-things .
+
+lt:eternal-punishment a loci:Doctrine ;
+    skos:prefLabel "Eternal Punishment"@en ;
+    skos:broader lt:last-things .
+
+lt:session a loci:Doctrine ;
+    skos:prefLabel "Session of Christ"@en ;
+    skos:broader lt:last-things ;
+    loci:presupposes lt:exaltation .
+
+lt:millennium a loci:Topic ;
+    skos:prefLabel "Millennium"@en ;
+    skos:broader lt:eschatology .
+
+lt:amillennialism a loci:Doctrine ;
+    skos:prefLabel "Amillennialism"@en ;
+    skos:broader lt:millennium .
+
+lt:postmillennialism a loci:Doctrine ;
+    skos:prefLabel "Postmillennialism"@en ;
+    skos:broader lt:millennium .
+
+lt:premillennialism a loci:Doctrine ;
+    skos:prefLabel "Premillennialism"@en ;
+    skos:broader lt:millennium .
